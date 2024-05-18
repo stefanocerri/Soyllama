@@ -81,7 +81,7 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
       onClick={handleClick}
     >
       <Image
-        src="/assets/images/prova.jpg"
+        src="/assets/images/front.jpg"
         alt="Immagine Elusiva"
         width={100}
         height={100}
