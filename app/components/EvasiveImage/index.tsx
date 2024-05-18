@@ -40,7 +40,7 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
   }, [startMoving, isMoving, pauseMovement]);
 
   const randomMove = () => {
-    if (Math.random() < 0.05) { // 5% di probabilità di pausa
+    if (Math.random() < 0.10) { // 10% di probabilità di pausa
       setPauseMovement(true);
       setTimeout(() => setPauseMovement(false), 500); // Pausa di 500ms
       return;

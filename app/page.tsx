@@ -18,10 +18,16 @@ const Home: FC = () => {
     return () => clearTimeout(timer);
   }, [animateText]);
 
+  const phrases = [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "2Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    "3Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  ]
+
   return (
     <>
       <EvasiveImage onImageClick={() => setAnimateText(true)} />
-      <MaskText active={animateText}/>
+      <MaskText active={animateText} text={phrases[0]}/>
     </>
   );
 };
