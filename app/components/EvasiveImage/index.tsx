@@ -12,7 +12,8 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [startMoving, setStartMoving] = useState(false);
   const [isMoving, setIsMoving] = useState(true);
-  const [pauseMovement, setPauseMovement] = useState(false); // Stato per gestire le pause
+  const [pauseMovement, setPauseMovement] = useState(false);
+  const [imageName, setImageName] = useState('front.jpg'); // stato per il nome dell'immagine
 
   const centerImage = () => {
     const windowX = window.innerWidth / 2 - 50;
@@ -32,7 +33,7 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
   }, []);
 
   useEffect(() => {
-    let interval:  NodeJS.Timeout;
+    let interval;
     if (startMoving && isMoving && !pauseMovement) {
       interval = setInterval(randomMove, 300);
     }
@@ -40,9 +41,9 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
   }, [startMoving, isMoving, pauseMovement]);
 
   const randomMove = () => {
-    if (Math.random() < 0.10) { // 10% di probabilità di pausa
+    if (Math.random() < 0.10) {
       setPauseMovement(true);
-      setTimeout(() => setPauseMovement(false), 500); // Pausa di 500ms
+      setTimeout(() => setPauseMovement(false), 500);
       return;
     }
 
@@ -51,6 +52,16 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
     const newX = Math.random() * windowX;
     const newY = Math.random() * windowY;
     setPosition({ x: newX, y: newY });
+
+    // Determina il nome dell'immagine basato sulla posizione
+    const thirdWindow = window.innerWidth / 3;
+    if (newX < thirdWindow) {
+      setImageName('sx.jpg');
+    } else if (newX > 2 * thirdWindow) {
+      setImageName('dx.jpg');
+    } else {
+      setImageName('front.jpg');
+    }
   };
 
   const handleClick = () => {
@@ -81,8 +92,8 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
       onClick={handleClick}
     >
       <Image
-        src="/assets/images/front.jpg"
-        alt="Immagine Elusiva"
+        src={`/assets/images/${imageName}`}
+        alt="Evasive Image"
         width={100}
         height={100}
         objectFit="cover"
