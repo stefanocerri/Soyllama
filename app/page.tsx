@@ -42,17 +42,15 @@ const Home: FC = () => {
       <div className="absolute inset-0 z-2">
         <EvasiveImage onImageClick={handleImageClick} >
             <AnimatePresence>
-                {!clicked && ( // Renderizza solo se non è stato cliccato
                 <motion.div
                   key="click-me"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1, scale: [1, 1.2, 1], color: ['#ff0000', '#00ff00', '#0000ff'], transition: { repeat: Infinity, duration: 0.5 } }}
-                  className="text-lg lg:text-8xl"
-                  onClick={() => setClicked(true)} // Imposta a true quando viene cliccato
+                  animate={{ opacity: 1, scale: [1, 1.2, 1], color: ['#ff0000', '#00ff00', '#0000ff','#ffffff'], transition: { repeat: Infinity, duration: clicked ? 0.2 : 0.5 } }}
+                  className="text-lg lg:text-6xl max-w-[400px]"
+                  onClick={() => setClicked(true)}
                 >
-                  Click me
+                  Click me Motherfukka
                 </motion.div>
-              )}
             </AnimatePresence>
         </EvasiveImage>
       </div>
@@ -74,7 +72,7 @@ const Home: FC = () => {
                 animate={{ opacity: 1, translateY: 0 }}
                 exit={{ opacity: 0, translateY: -30, transition: { duration: 0.5 } }}
                 transition={{ duration: 0.5 }}
-                className={`${index === phrases.length - 1 ? 'text-blue-500 ' : 'text-black'} text-lg lg:text-8xl`}
+                className={`${index === phrases.length - 1 ? 'text-blue-500 ' : 'text-black'} text-4xl lg:text-8xl`}
               >
                 {phrase}
               </motion.div>

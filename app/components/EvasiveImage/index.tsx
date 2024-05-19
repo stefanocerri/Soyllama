@@ -17,7 +17,7 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick , children}) => {
   const [imageName, setImageName] = useState('front.png'); // stato per il nome dell'immagine
 
   const centerImage = () => {
-    const windowX = window.innerWidth / 2 - 275;
+    const windowX = window.innerWidth / 2 - 550;
     const windowY = window.innerHeight / 2 - 275;
     setPosition({ x: windowX, y: windowY });
   };
@@ -75,7 +75,7 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick , children}) => {
 
   return (
     <motion.div
-      className="fixed"
+      className="fixed flex flex-col gap-6 text-center"
       initial={{ x: position.x, y: position.y }}
       animate={{ x: position.x, y: position.y }}
       transition={{
