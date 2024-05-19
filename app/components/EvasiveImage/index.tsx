@@ -1,29 +1,31 @@
 "use client";
 
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState, FC } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
 type EvasiveImageProps = {
   onImageClick: () => void;
+  children?: React.ReactNode
 };
 
-const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
+const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick , children}) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isMoving, setIsMoving] = useState(false);
+  const [startMoving, setStartMoving] = useState(false);
+  const [isMoving, setIsMoving] = useState(true);
   const [pauseMovement, setPauseMovement] = useState(false);
-  const [imageName, setImageName] = useState('front.jpg'); // stato per il nome dell'immagine
+  const [imageName, setImageName] = useState('front.png'); // stato per il nome dell'immagine
+
+  const centerImage = () => {
+    const windowX = window.innerWidth / 2 - 275;
+    const windowY = window.innerHeight / 2 - 275;
+    setPosition({ x: windowX, y: windowY });
+  };
 
   useEffect(() => {
-    const centerImage = () => {
-      const windowX = window.innerWidth / 2 - 50;
-      const windowY = window.innerHeight / 2 - 50;
-      setPosition({ x: windowX, y: windowY });
-    };
-
     centerImage();
     window.addEventListener('resize', centerImage);
-    const timer = setTimeout(() => setIsMoving(true), 1000);
+    const timer = setTimeout(() => setStartMoving(true), 1000);
 
     return () => {
       window.removeEventListener('resize', centerImage);
@@ -33,21 +35,21 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
 
   useEffect(() => {
     let interval:  NodeJS.Timeout;
-    if (isMoving && !pauseMovement) {
-      interval = setInterval(randomMove, 300); //da mettere 300
+    if (startMoving && isMoving && !pauseMovement) {
+      interval = setInterval(randomMove, 300);
     }
     return () => clearInterval(interval);
-  }, [isMoving, pauseMovement]);
+  }, [startMoving, isMoving, pauseMovement]);
 
   const randomMove = () => {
     if (Math.random() < 0.10) {
       setPauseMovement(true);
-      setTimeout(() => setPauseMovement(false), 750);
+      setTimeout(() => setPauseMovement(false), 500);
       return;
     }
 
-    const windowX = window.innerWidth - 100;
-    const windowY = window.innerHeight - 100;
+    const windowX = window.innerWidth - 275;
+    const windowY = window.innerHeight - 275;
     const newX = Math.random() * windowX;
     const newY = Math.random() * windowY;
     setPosition({ x: newX, y: newY });
@@ -66,7 +68,9 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
   const handleClick = () => {
     onImageClick();
     setIsMoving(false);
-    setTimeout(() => setIsMoving(true), 100);
+    setTimeout(() => {
+      setIsMoving(true);
+    }, 100);
   };
 
   return (
@@ -76,24 +80,24 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
       animate={{ x: position.x, y: position.y }}
       transition={{
         type: "spring",
-        stiffness: 300,
+        stiffness: 1400,
         damping: 30
       }}
-      onClick={handleClick}
       style={{
-        width: 400,
-        height: 400,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}
+      onClick={handleClick}
     >
+      {children}
       <Image
         src={`/assets/images/${imageName}`}
         alt="Evasive Image"
-        width={400}
-        height={400}
+        width={550}
+        height={550}
         objectFit="cover"
+        className='cursor-pointer'
       />
     </motion.div>
   );
