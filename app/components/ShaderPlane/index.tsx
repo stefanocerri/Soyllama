@@ -20,29 +20,43 @@ precision mediump float;
 varying vec2 vUv;
 uniform float uTime;
 
-vec3 hueShift(vec3 color, float shift) {
-    color = (color - 0.5) * (1.0 + shift) + 0.5;
-    return fract(color);
+float colormap_red(float x) {
+    if (x < 0.0) return 54.0 / 255.0;
+    else if (x < 20049.0 / 82979.0) return (829.79 * x + 54.51) / 255.0;
+    else return 1.0;
 }
 
-vec3 colorize(float n) {
-    return vec3(sin(n * 2.0 + uTime), sin(n * 3.0 + uTime / 2.0), sin(n + uTime / 3.0));
+float colormap_green(float x) {
+    if (x < 20049.0 / 82979.0) return 0.0;
+    else if (x < 327013.0 / 810990.0) return (8546482679670.0 / 10875673217.0 * x - 2064961390770.0 / 10875673217.0) / 255.0;
+    else if (x <= 1.0) return (103806720.0 / 483977.0 * x + 19607415.0 / 483977.0) / 255.0;
+    else return 1.0;
+}
+
+float colormap_blue(float x) {
+    if (x < 0.0) return 54.0 / 255.0;
+    else if (x < 7249.0 / 82979.0) return (829.79 * x + 54.51) / 255.0;
+    else if (x < 20049.0 / 82979.0) return 127.0 / 255.0;
+    else if (x < 327013.0 / 810990.0) return (792.02249341361393720147485376583 * x - 64.364790735602331034989206222672) / 255.0;
+    else return 1.0;
+}
+
+vec4 colormap(float x) {
+    return vec4(colormap_red(x), colormap_green(x), colormap_blue(x), 1.0);
 }
 
 float pattern(vec2 p) {
-    vec2 pos = p * 10.0 - 5.0;
-    float dist = length(pos);
-    return sin(dist - uTime);
+    float total = 0.0;
+    total += sin(p.x * 10.0 + uTime);
+    total += cos(p.y * 10.0 + uTime);
+    return total;
 }
 
 void main() {
-    float basePattern = pattern(vUv);
-    vec3 color = colorize(basePattern);
-    color = hueShift(color, sin(uTime));
-    gl_FragColor = vec4(color, 1.0);
+    float shade = pattern(vUv);
+    vec4 color = colormap(shade);
+    gl_FragColor = vec4(color.rgb, 1.0);
 }`;
-
-
 
 // Creation of the shader material
 const CustomShaderMaterial = shaderMaterial(
