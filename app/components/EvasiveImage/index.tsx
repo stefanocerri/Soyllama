@@ -55,11 +55,11 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
     // Determina il nome dell'immagine basato sulla posizione
     const thirdWindow = window.innerWidth / 3;
     if (newX < thirdWindow) {
-      setImageName('sx.jpg');
+      setImageName('sx.png');
     } else if (newX > 2 * thirdWindow) {
-      setImageName('dx.jpg');
+      setImageName('dx.png');
     } else {
-      setImageName('front.jpg');
+      setImageName('front.png');
     }
   };
 
@@ -81,8 +81,8 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
       }}
       onClick={handleClick}
       style={{
-        width: 100,
-        height: 100,
+        width: 400,
+        height: 400,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -91,8 +91,8 @@ const EvasiveImage: FC<EvasiveImageProps> = ({ onImageClick }) => {
       <Image
         src={`/assets/images/${imageName}`}
         alt="Evasive Image"
-        width={100}
-        height={100}
+        width={400}
+        height={400}
         objectFit="cover"
       />
     </motion.div>

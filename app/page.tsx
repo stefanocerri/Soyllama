@@ -36,8 +36,8 @@ const Home: FC = () => {
       </Canvas>
       <div>
         <EvasiveImage onImageClick={handleImageClick} />
-        <div className="w-full h-[230px] lg:max-w-[800px] overflow-hidden p-3 absolute top-0 z-1">
-          <div className="flex flex-col items-start justify-end h-full space-y-4">
+        <div className="w-full overflow-hidden p-12 absolute top-0 left-0 z-1">
+          <div className="flex flex-col items-start justify-end h-full space-y-16">
             <AnimatePresence>
               {phrases.map((phrase, index) => (
                 <motion.div
@@ -46,7 +46,7 @@ const Home: FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -30, transition: { duration: 0.5 } }}
                   transition={{ duration: 0.5 }}
-                  className="px-4 py-2 text-lg text-white bg-blue-500 rounded-lg lg:text-2xl"
+                  className="text-blue-500 text-lg lg:text-6xl"
                 >
                   {phrase}
                 </motion.div>
