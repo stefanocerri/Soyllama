@@ -1,16 +1,18 @@
+"use client"
+
+import React, { FC, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import React, { useEffect, useMemo } from 'react';
 
-export type Props = {
+type Props = {
     active: boolean;
     text: string;
     children?: React.ReactNode;
-}
+};
 
-const MaskText: React.FC<Props> = ({ active , text , children }) => {
-
-    const maxLineLength = 30; // Mssimo numero di caratteri per linea
+const MaskText: FC<Props> = ({ active, text, children }) => {
+    console.log(text, 'text');
+    const maxLineLength = 30; // Massimo numero di caratteri per linea
 
     const lines = useMemo(() => {
         const words = text.split(' ');
@@ -27,12 +29,12 @@ const MaskText: React.FC<Props> = ({ active , text , children }) => {
         }
         lines.push(currentLine);
         return lines;
-    }, []);
+    }, [text]);
 
     const animation = {
         initial: { y: "100%" },
         enter: (i: number) => ({ y: "0%", transition: { duration: 0.75, ease: [0.33, 1, 0.68, 1], delay: 0.075 * i } }),
-        exit: (i: number) => ({ y: "100%", transition: { duration: 0.75, ease: [0.33, 1, 0.68, 1], delay: 0.075 * (3 - i) } })
+        exit: (i: number) => ({ y: "100%", transition: { duration: 0.75, ease: [0.33, 1, 0.68, 1], delay: 0.075 * (lines.length - i) } })
     };
 
     const { ref, inView } = useInView({
@@ -40,6 +42,9 @@ const MaskText: React.FC<Props> = ({ active , text , children }) => {
         triggerOnce: false,
         skip: !active
     });
+
+    // Usiamo `active` direttamente per controllare le animazioni
+    const shouldAnimate = active || inView;
 
     return (
         <div ref={ref}>
@@ -49,7 +54,7 @@ const MaskText: React.FC<Props> = ({ active , text , children }) => {
                         custom={index}
                         variants={animation}
                         initial="initial"
-                        animate={active ? "enter" : "exit"}
+                        animate={shouldAnimate ? "enter" : "exit"}
                         className='text-7xl'
                     >
                         {line}
@@ -58,6 +63,6 @@ const MaskText: React.FC<Props> = ({ active , text , children }) => {
             ))}
         </div>
     );
-}
+};
 
 export default MaskText;
